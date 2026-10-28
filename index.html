@@ -4,53 +4,165 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Nano Banana — AI 图片生成 | 测试落地页</title>
-<meta name="description" content="用一句话生成图片，或用图片编辑图片。Nano Banana 测试落地页：文生图、图生图、风格保持。">
+<title>Nano Banana — 一句话生成图片 | AI 文生图、图生图</title>
+<meta name="description" content="Nano Banana：用一句话生成图片，上传图片继续编辑、换风格、改细节。文生图、图生图、多图融合、风格保持，网页打开就能用。">
 <style>
-  body{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;margin:0;color:#111;background:#fff}
-  .wrap{max-width:960px;margin:0 auto;padding:48px 20px}
-  header{display:flex;justify-content:space-between;align-items:center}
-  .logo{font-weight:800;font-size:20px}
-  .cta{display:inline-block;background:#111;color:#fff;padding:12px 22px;border-radius:999px;text-decoration:none}
-  .hero{padding:64px 0 32px;text-align:center}
-  .hero h1{font-size:44px;line-height:1.2;margin:0 0 16px}
-  .hero p{font-size:18px;color:#555;line-height:1.7;max-width:640px;margin:0 auto 28px}
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:40px 0}
-  .card{border:1px solid #eee;border-radius:16px;padding:20px}
-  .card h3{margin:0 0 8px}
-  .card p{color:#555;line-height:1.7;margin:0}
-  .steps{line-height:1.9;color:#333}
-  footer{color:#888;font-size:13px;text-align:center;padding:40px 0 0}
-  @media(max-width:640px){.grid{grid-template-columns:1fr}.hero h1{font-size:32px}}
+  :root{--ink:#17140a;--mut:#5d5646;--line:#eee6c8;--yellow:#ffd84d;--yellow2:#ffedb0;--green:#2f7d4f;--bg:#fffdf3}
+  *{box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;margin:0;color:var(--ink);background:var(--bg);line-height:1.7}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  header{position:sticky;top:0;background:rgba(255,253,243,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:10}
+  .nav{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:16px}
+  .logo{font-weight:900;font-size:20px;letter-spacing:.2px}
+  .navlinks{display:flex;gap:18px;color:var(--mut);font-size:14px}
+  .navlinks a{text-decoration:none}
+  .cta{display:inline-block;background:var(--ink);color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:700;white-space:nowrap}
+  .cta.yellow{background:var(--yellow);color:var(--ink)}
+  .cta:hover{transform:translateY(-1px)}
+  .hero{padding:64px 0 36px;text-align:center}
+  .badge{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--mut)}
+  .hero h1{font-size:52px;line-height:1.15;margin:20px 0 16px;letter-spacing:-.5px}
+  .hero h1 span{background:linear-gradient(180deg,transparent 62%,var(--yellow) 62%)}
+  .hero p{font-size:18px;color:var(--mut);max-width:680px;margin:0 auto 28px}
+  .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .ghost{border:1px solid #ddd6b8;background:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:700}
+  .showcase{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:36px 0 8px}
+  .tile{border-radius:20px;padding:18px;min-height:170px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;text-align:left}
+  .tile b{font-size:17px;line-height:1.4}
+  .tile small{opacity:.9}
+  .t1{background:linear-gradient(135deg,#ff9a3d,#ff5e62)}
+  .t2{background:linear-gradient(135deg,#2f7d4f,#8fce6a)}
+  .t3{background:linear-gradient(135deg,#5b6cff,#9b7bff)}
+  .t4{background:linear-gradient(135deg,#111827,#4b5563)}
+  section{padding:44px 0}
+  h2{font-size:30px;line-height:1.3;margin:0 0 10px}
+  .sub{color:var(--mut);margin:0 0 24px;max-width:720px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}
+  .card .icon{font-size:28px}
+  .card h3{margin:8px 0 6px;font-size:18px}
+  .card p{margin:0;color:var(--mut)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .step{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}
+  .step b{font-size:28px;color:#c9a400}
+  .prompt{background:#17140a;color:#f5ecd0;border-radius:16px;padding:18px 20px}
+  .prompt p{margin:0 0 12px}
+  .prompt button{background:var(--yellow);border:0;border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
+  .faq details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:10px}
+  .faq summary{font-weight:700;cursor:pointer}
+  .faq p{color:var(--mut);margin:8px 0 0}
+  .final{background:var(--ink);color:#fff;border-radius:24px;padding:44px 32px;text-align:center}
+  .final p{color:#d8d2bd;max-width:620px;margin:0 auto 24px}
+  footer{color:#8a8270;font-size:13px;text-align:center;padding:36px 0 48px}
+  @media(max-width:760px){
+    .navlinks{display:none}
+    .hero h1{font-size:34px}
+    .showcase{grid-template-columns:1fr 1fr}
+    .grid3,.grid2,.steps{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header><div class="logo">🍌 Nano Banana</div><a class="cta" href="https://nanopic.app/">开始生成</a></header>
+<header><div class="wrap nav">
+  <div class="logo">🍌 Nano Banana</div>
+  <nav class="navlinks"><a href="#features">功能</a><a href="#cases">能做什么</a><a href="#prompts">提示词示例</a><a href="#how">怎么用</a><a href="#faq">常见问题</a></nav>
+  <a class="cta" href="https://nanopic.app/">开始生成</a>
+</div></header>
+
+<main class="wrap">
   <section class="hero">
-    <h1>一句话，生成你想要的图片</h1>
-    <p>Nano Banana 是 AI 图片生成工具：输入文字生成图片，上传图片也可以继续编辑、换风格、改细节。</p>
-    <a class="cta" href="https://nanopic.app/">免费开始 →</a>
+    <span class="badge">✦ 网页版 AI 图片生成 · 不用下载 App</span>
+    <h1>一句话，<span>生成你想要的图片</span></h1>
+    <p>写一句描述就能出图，上传一张图也能继续改：换背景、换风格、修细节、换衣服、改表情，主体尽量保持一致，改到满意为止。</p>
+    <div class="hero-cta">
+      <a class="cta yellow" href="https://nanopic.app/">免费开始生成 →</a>
+      <a class="ghost" href="#prompts">先看提示词示例</a>
+    </div>
+    <div class="showcase">
+      <div class="tile t1"><small>文生图</small><b>落日下的海边小镇，水彩风</b></div>
+      <div class="tile t2"><small>图生图</small><b>把照片换成秋天背景</b></div>
+      <div class="tile t3"><small>多图融合</small><b>猫 + 宇航服 = 太空猫</b></div>
+      <div class="tile t4"><small>风格保持</small><b>同一角色，换一套造型</b></div>
+    </div>
   </section>
-  <section class="grid">
-    <div class="card"><h3>文生图</h3><p>用自然语言描述画面、风格和构图，直接出图。</p></div>
-    <div class="card"><h3>图生图</h3><p>上传一张图，改背景、换风格、修细节，保持主体一致。</p></div>
-    <div class="card"><h3>多图参考</h3><p>一次给多张参考图，融合元素，生成新画面。</p></div>
+
+  <section id="features">
+    <h2>不只是生成，还能接着改</h2>
+    <p class="sub">很多工具出图就结束了，Nano Banana 更像一个可以反复对话的画板：第一版不满意，直接说哪里要改，不用从头重画。</p>
+    <div class="grid3">
+      <div class="card"><div class="icon">✍️</div><h3>文生图</h3><p>用自然语言描述画面、风格、光线和构图，直接生成图片，适合从零起稿。</p></div>
+      <div class="card"><div class="icon">🖼️</div><h3>图生图</h3><p>上传照片或旧图，改背景、换季节、修瑕疵，主体和构图尽量不走样。</p></div>
+      <div class="card"><div class="icon">🧩</div><h3>多图融合</h3><p>一次给多张参考图，把不同元素拼进同一张画面，做混搭和创意合成。</p></div>
+      <div class="card"><div class="icon">🎭</div><h3>风格保持</h3><p>同一人物或同一角色换场景、换服装、换表情，画风和长相尽量稳定。</p></div>
+      <div class="card"><div class="icon">🔍</div><h3>细节修改</h3><p>只改一处：换一件衣服、加一顶帽子、把白天改成黄昏，其他部分不动。</p></div>
+      <div class="card"><div class="icon">💬</div><h3>中文提示词也行</h3><p>不用背英文术语，用中文把画面说清楚就行，越具体，出图越接近预期。</p></div>
+    </div>
   </section>
+
+  <section id="cases">
+    <h2>这些场景，都可以直接试</h2>
+    <p class="sub">不用先学设计软件，先从一个具体需求开始，生成、挑图、再改一版。</p>
+    <div class="grid3">
+      <div class="card"><h3>🛍️ 电商和种草图</h3><p>给产品换背景、换场景、换氛围，做主图、详情图和社交配图。</p></div>
+      <div class="card"><h3>👤 头像和写真</h3><p>把照片换成插画风、复古风、动漫风，做头像和节日写真。</p></div>
+      <div class="card"><h3>🎨 插画和海报</h3><p>写一句主题，生成海报草稿、插画封面和活动配图，再改文字排版方向。</p></div>
+      <div class="card"><h3>📱 社交内容</h3><p>做表情包、梗图、节日祝福图，同一风格出一组，不用一张张重画。</p></div>
+      <div class="card"><h3>🏠 家装和穿搭灵感</h3><p>把房间或穿搭照片换个风格，快速看几种效果，再决定真实方案。</p></div>
+      <div class="card"><h3>📚 课件和讲稿配图</h3><p>给抽象概念配一张示意图，给故事配一组连续画面，讲起来更直观。</p></div>
+    </div>
+  </section>
+
+  <section id="prompts">
+    <h2>提示词示例：复制过去就能用</h2>
+    <p class="sub">好提示词的套路很固定：主体 + 场景 + 风格 + 光线。先抄一句，改其中一个词，就能出完全不同的图。</p>
+    <div class="grid2">
+      <div class="prompt"><p>一只橘猫坐在窗台上看雨，暖黄灯光，水彩插画风，温柔治愈</p><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent);this.textContent='已复制 ✓'">复制提示词</button></div>
+      <div class="prompt"><p>把这张照片的背景换成秋天的银杏大道，阳光透过树叶，保留人物和衣服不变</p><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent);this.textContent='已复制 ✓'">复制提示词</button></div>
+      <div class="prompt"><p>未来城市夜景，霓虹灯倒映在雨后的街道上，电影感，广角构图</p><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent);this.textContent='已复制 ✓'">复制提示词</button></div>
+      <div class="prompt"><p>同一只小狗，换成宇航员服装，站在月球表面，背景是地球，写实风格</p><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent);this.textContent='已复制 ✓'">复制提示词</button></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2>四步出图，改到满意为止</h2>
+    <div class="steps">
+      <div class="step"><b>01</b><h3>说清楚画面</h3><p>写主体、场景、风格、光线，越具体越好，不用写成长文。</p></div>
+      <div class="step"><b>02</b><h3>可选：上传参考图</h3><p>想改图就上传原图，想融合就多传几张参考图。</p></div>
+      <div class="step"><b>03</b><h3>生成并挑一张</h3><p>多生成几版对比，挑最接近的那张继续改。</p></div>
+      <div class="step"><b>04</b><h3>说出要改的地方</h3><p>比如“背景换成夜景”“衣服换成红色”，只改那一处。</p></div>
+    </div>
+  </section>
+
   <section>
-    <h2>怎么用</h2>
-    <ol class="steps">
-      <li>写一句话描述你想要的画面</li>
-      <li>可选：上传参考图</li>
-      <li>生成、挑一张、再改一版</li>
-    </ol>
+    <h2>写提示词的小技巧</h2>
+    <div class="grid3">
+      <div class="card"><h3>先定主体，再定风格</h3><p>“一只猫”太宽，“橘猫 + 水彩风”就具体多了，出图方向立刻收敛。</p></div>
+      <div class="card"><h3>一次只改一个变量</h3><p>同时改背景、衣服、光线容易失控，先改最关键的那一个。</p></div>
+      <div class="card"><h3>把“不要什么”也写上</h3><p>比如不要文字、不要水印、不要多余人物，能少走很多弯路。</p></div>
+    </div>
   </section>
-  <section>
+
+  <section id="faq" class="faq">
     <h2>常见问题</h2>
-    <p><strong>需要下载 App 吗？</strong><br>不需要，网页打开就能用。</p>
-    <p><strong>生成的图能商用吗？</strong><br>以 nanopic.app 上的实际条款为准。</p>
+    <p class="sub">正式规则以 nanopic.app 上的实际说明为准。</p>
+    <details open><summary>需要下载 App 吗？</summary><p>不需要，网页打开就能用，手机和电脑浏览器都可以。</p></details>
+    <details><summary>不会写英文提示词怎么办？</summary><p>用中文写就行，把主体、场景、风格、光线说清楚，效果通常已经很好。</p></details>
+    <details><summary>生成的图和我想的不一样怎么办？</summary><p>先挑最接近的一版，再说出具体要改的地方，比如换背景、换颜色、换表情，逐版逼近。</p></details>
+    <details><summary>可以改自己的照片吗？</summary><p>可以，上传照片后说出要改的部分，系统会尽量保持人物和主体不变。</p></details>
+    <details><summary>生成的图能商用吗？</summary><p>以 nanopic.app 上的实际条款为准，使用前建议先看一遍相关说明。</p></details>
+    <details><summary>一次能生成几张？</summary><p>以 nanopic.app 上的实际额度说明为准，多生成几版再挑，通常比只生成一张效果好。</p></details>
   </section>
-  <footer>测试落地页 · 正式入口：nanopic.app</footer>
-</div>
+
+  <section>
+    <div class="final">
+      <h2 style="color:#fff">现在就试一句</h2>
+      <p>不用准备素材，不用先学教程。打开页面，写一句你脑子里刚想到的画面，看看它长什么样。</p>
+      <a class="cta yellow" href="https://nanopic.app/">免费开始生成 →</a>
+    </div>
+  </section>
+</main>
+<footer>测试落地页 · 正式入口：<a href="https://nanopic.app/">nanopic.app</a></footer>
 </body>
 </html>
